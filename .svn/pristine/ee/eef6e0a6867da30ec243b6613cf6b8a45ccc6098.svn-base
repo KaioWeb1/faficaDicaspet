@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+
+<h:head>
+
+	<title>DicasPet - Celtic Solutions</title>
+	
+</h:head>
+<h:body>
+	<h:outputStylesheet library="css" name="style.css" />
+
+	<div class="wrapper">
+		<ui:include src="template-admin/header.xhtml" />
+		<!-- Conteudo do site começa apartir daqui -->
+		<div class="geral">
+			<!-- aqui é onde fica o conteúdo -->
+			<!-- o layout do site divide-se em 3 colunas: left, center, right -->
+					<c:choose>
+				<c:when test="#{usuarioMB.tipo.equalsIgnoreCase('adm')}">
+					<ui:include src="admin/template-admin/left-admin.xhtml" />
+				</c:when>
+				<c:when test="#{usuarioMB.tipo.equalsIgnoreCase('prestador')}">
+					<ui:include src="admin/template-admin/left-prestador.xhtml" />
+				</c:when>
+				<c:otherwise>
+					<ui:include src="/template/left.xhtml" />
+				</c:otherwise>
+			</c:choose>
+			<div class="center">
+
+	
+				<!-- aqui é onde fica o conteúdo -->
+				<div class="bloco-empresa">
+				
+					<h3>Serviços</h3>
+					
+					<br></br>
+					<br></br>
+					<div class="pergunta">
+						<div class="link-resposta"><a href="cadastro-servico.xhtml">Cadastrar Serviço</a></div>
+					</div>
+					
+					<br></br>
+					<br />
+				<h:messages errorStyle="color: red" infoStyle="color: yellow"
+							warnStyle="color: orange" fatalStyle="color: gray"
+							showDetail="true" showSummary="false" />
+				
+					<h3>Lista de Agendamento</h3>
+					
+					<h:dataTable value="#{usuarioServicoMB.servicosDoPrestador}" var="servico" border="1">
+					
+					<h:column>
+					<h:outputText value="#{servico.pk.servico.srv_descricao}" />
+					</h:column>
+					<h:column>
+					<h:outputText value="#{servico.status_servico_confirmacao}" />
+					</h:column>
+					<h:column>
+					<h:outputText value="#{servico.pk.servico.srv_preco}" />
+					</h:column>
+					<h:column>
+					<h:outputText value="#{servico.pk.usuario.usu_nome}" />
+					</h:column>
+					<h:column>
+					<h:form>
+					<h:commandButton value="Confirmar" action="#{usuarioServicoMB.confirmarAgendamento(servico)}" />
+					</h:form>
+					</h:column>
+					</h:dataTable>
+
+				</div>
+				<!-- Fim do Bloco -->
+
+				<div class="banner">
+					<h3>Publicidade</h3>
+					<img alt="" src="../images/banner1.jpg" />
+				</div>
+
+
+
+
+
+			</div>
+			<ui:include src="template-admin/right.xhtml" />
+			<div class="clr"></div>
+		</div>
+
+		<ui:include src="template-admin/footer.xhtml" />
+	</div>
+
+</h:body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+
+	<title>DicasPet- Contato - Celtic Solutions</title>
+
+</h:head>
+<h:body>
+	<h:outputStylesheet library="css" name="style.css" />
+
+	<div class="wrapper">
+		<ui:include src="template-admin/header.xhtml" />
+		<!-- Conteudo do site começa apartir daqui -->
+		<div class="geral">
+
+
+			<!-- o layout do site divide-se em 3 colunas: left, center, right -->
+		
+					<ui:include src="template-admin/left-admin.xhtml" />
+			
+			<div class="center">
+				<!-- aqui é onde fica o conteúdo -->
+				<div class="bloco-contato">
+					<h3>Cadastro do Prestador</h3>
+					<h:form id="form_cadastro_prestador">
+						<p:messages errorStyle="color: red" infoStyle="color: yellow"
+							warnStyle="color: orange" fatalStyle="color: gray"
+							showDetail="true" showSummary="false" />
+
+						<h:outputLabel value="Nome:" />
+						<p:inputText value="#{usuarioMB.usuario.usu_nome}" id="nome"
+							requiredMessage="Nome: Campo Obrigatório" required="true" />
+						<p:watermark for="nome" value="Nome do usuário" />
+						<br></br>
+
+						<h:selectOneRadio id="pessoa" value="#{usuarioMB.tipo}"
+							required="true" requiredMessage="Pessoa: Campo Obrigatório">
+							<f:selectItem itemLabel="Jurídica" itemValue="Juridica" />
+							<f:selectItem itemLabel="Física" itemValue="Fisica" />
+							<p:ajax event="change" update="pnlPessoa" process="@this" />
+						</h:selectOneRadio>
+
+						<p:outputPanel id="pnlPessoa">
+
+
+							<h:outputLabel id="lbCpf" value="CPF:" for="cpf"
+								rendered="#{usuarioMB.tipo=='Fisica'}" />
+							<p:inputMask mask="999.999.999-99" id="cpf" size="25"
+								label="TESTE" rendered="#{usuarioMB.tipo=='Fisica'}"
+								value="#{usuarioMB.usuario.usu_cfp}" />
+
+							<h:outputLabel id="lbCnpj" value="CNPJ:" for="cnpj"
+								rendered="#{usuarioMB.tipo=='Juridica'}" />
+							<p:inputMask mask="99.999.999/9999-99" id="cnpj" size="25"
+								rendered="#{usuarioMB.tipo=='Juridica'}"
+								value="#{usuarioMB.usuario.usu_cnpj}" />
+
+						</p:outputPanel>
+						<!-- 
+						<h:outputLabel value="CNPJ:" />
+						<p:inputMask mask="99.999.999/9999-99" value="#{usuarioMB.usuario.usu_cnpj}" />
+						<br></br>
+						<h:outputLabel value="CPF:" />
+						<p:inputMask mask="999-999-999-99" value="#{usuarioMB.usuario.usu_cfp}" />
+						<br></br>
+						-->
+						<h:outputLabel value="Endereço:" />
+						<p:inputText value="#{usuarioMB.usuario.usu_endereco}"
+							id="endereco" requiredMessage="Endereço: Campo Obrigatório"
+							required="true" />
+						<p:watermark for="endereco" value="Localização" />
+						<br></br>
+						<h:outputLabel value="Tipo:" />
+						<p:inputText value="#{usuarioMB.usuario.usu_tipo_servico}"
+							id="tipo" requiredMessage="Tipo: Campo Obrigatório"
+							required="true" />
+						<p:watermark for="tipo" value="Tipo de Serviço" />
+						<br></br>
+						<h:outputLabel value="E-mail:" />
+						<!--  <h:inputText id="email" value="#{usuarioMB.usuario.usu_email}" onblur="validaEmail()"  /> -->
+						<p:inputText id="email" value="#{usuarioMB.usuario.usu_email}"
+							required="true" label="email"
+							requiredMessage="Por favor insira seu endereço de e-mail."
+							validatorMessage="Email Inválido">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+						<p:watermark for="email" value="Endereço de E-mail" />
+
+						<br></br>
+						<h:outputLabel value="Senha:" />
+
+						<p:password id="senha" value="#{usuarioMB.usuario.usu_senha}"
+							required="true" match="senha1"
+							validatorMessage="As senhas são diferentes"
+							requiredMessage="Senha: Campo Obrigatório" />
+						<br></br>
+						<h:outputLabel value="Confirme a Senha:" />
+						<p:password id="senha1" value="#{usuarioMB.usuario.usu_senha}"
+							required="true"
+							requiredMessage="Confirme a Senha: Campo Obrigatório" />
+						<br></br>
+
+						<br />
+						<br />
+						<h:commandButton value="Enviar" class="bt-enviar"
+							actionListener="#{usuarioMB.cadastrar}" />
+						<br></br>
+					</h:form>
+				</div>
+				<!-- Fim do Bloco  -->
+
+				<div class="banner">
+					<h3>Publicidade</h3>
+					<img alt="" src="../images/banner1.jpg" />
+				</div>
+
+
+
+
+			</div>
+			<ui:include src="template-admin/right.xhtml" />
+
+
+
+
+		</div>
+		<ui:include src="template-admin/footer.xhtml" />
+	</div>
+
+</h:body>
+</html>

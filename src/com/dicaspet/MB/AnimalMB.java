@@ -1,0 +1,223 @@
+package com.dicaspet.MB;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.model.UploadedFile;
+
+import com.dicaspet.entidade.Animal;
+import com.dicaspet.entidade.Usuario;
+import com.dicaspet.fachada.Fachada;
+import com.dicaspet.util.FacesContextUtil;
+
+@ManagedBean
+@SessionScoped
+public class AnimalMB {
+
+	private Animal animal;
+	private Fachada fachada;
+	private List<Animal> animais;
+	private List<Animal> animaisAdocao;
+	private UploadedFile foto;
+	private Animal animalSelecionado;
+	public AnimalMB() {
+
+		
+		animal = new Animal();
+		fachada = Fachada.getInstance();
+		
+	}
+	
+
+	public Animal getAnimal() {
+		return animal;
+	}
+
+	public void setAnimal(Animal animal) {
+		this.animal = animal;
+	}
+
+	public Fachada getFachada() {
+		return fachada;
+	}
+
+	public void setFachada(Fachada fachada) {
+		this.fachada = fachada;
+	}
+
+	public List<Animal> getAnimals() {
+		if (animais == null) {
+			try {
+				animais = fachada.controladorAnimal().listar();
+			} catch (Exception e) {
+				animais = new ArrayList<Animal>();
+			}
+		}
+
+		return animais;
+	}
+
+	public void setAnimals(List<Animal> animals) {
+		this.animais = animals;
+	}
+
+	public void deletar(Animal animal) {
+
+		fachada.controladorAnimal().remover(animal);
+	}
+
+	public String cadastrar() throws IOException {
+
+		if (animal.getAni_peso() < 5) {
+			animal.setAni_qtdInicAlimento(110);
+			animal.setAni_qtdFimAlimento(110 * 1.2);
+		}
+
+		else if (animal.getAni_peso() >= 5) {
+			animal.setAni_qtdInicAlimento(190);
+			animal.setAni_qtdFimAlimento(190 * 1.2);
+		}
+
+		else if (animal.getAni_peso() >= 10) {
+			animal.setAni_qtdInicAlimento(250);
+			animal.setAni_qtdFimAlimento(250 * 1.2);
+		}
+
+		else if (animal.getAni_peso() >= 15) {
+			animal.setAni_qtdInicAlimento(310);
+			animal.setAni_qtdFimAlimento(310 * 1.2);
+		}
+
+		else if (animal.getAni_peso() >= 20) {
+			animal.setAni_qtdInicAlimento(530);
+			animal.setAni_qtdFimAlimento(530 * 1.2);
+		}
+
+		else if (animal.getAni_peso() >= 40) {
+			animal.setAni_qtdInicAlimento(720);
+			animal.setAni_qtdFimAlimento(720 * 1.2);
+		}
+		
+		processFileUpload();
+
+		Usuario usu = (Usuario) FacesContextUtil.getSessionAttribute("usuario");
+
+		animal.setAni_id_usu(usu);
+
+		fachada.controladorAnimal().cadastrar(animal);
+		
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Cadastro com Sucesso!", "O animal " + animal.getAni_nome()
+						+ " foi cadastrado com sucesso.");
+
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		
+		limpar();
+		
+		return "lista-animal?faces-redirect=true";
+		
+		
+		
+	}
+
+	private void limpar() {
+		animal = new Animal();
+	}
+
+	public List<Animal> getAnimaisAdocao() {
+		
+		Usuario usuario = (Usuario)FacesContextUtil.getSessionAttribute("usuario");
+		
+		if (animaisAdocao == null) {
+			try {
+				animaisAdocao = fachada.controladorAnimal().listaAdocao(usuario);
+			} catch (Exception e) {
+				animaisAdocao = new ArrayList<Animal>();
+			}
+		}
+		return animaisAdocao;
+	}
+
+	public void setAnimaisAdocao(List<Animal> animaisAdocao) {
+		this.animaisAdocao = animaisAdocao;
+	}
+
+	public String editarAnimalRedirect(Animal animal) {
+
+		this.animal = animal;
+
+		return "editar-animal?faces-redirect=true";
+
+	}
+
+	public String perfilAnimalRedirect(Animal animal) {
+
+		this.animal = animal;
+		FacesContextUtil.setSessionAttribute("animal",animal);
+
+		return "animal?faces-redirect=true";
+
+	}
+
+	public void editar() {
+
+		fachada.controladorAnimal().atualizar(animal);
+		FacesMessage message = new FacesMessage(
+				"Editado com Sucesso!", "O animal " + animal.getAni_nome()
+						+ " foi editado com sucesso.");
+
+		FacesContext.getCurrentInstance().addMessage(null, message);
+		animal = new Animal();
+	}
+
+	public UploadedFile getFoto() {
+		return foto;
+	}
+
+	public void setFoto(UploadedFile foto) {
+		this.foto = foto;
+	}
+	
+	
+	public void processFileUpload() throws IOException {  
+        try {  
+  
+            animal.setAni_foto(foto.getFileName().toString());
+            System.out.println(animal.getAni_nome()+"---------------------------------------------------------------------------------");
+            InputStream in = new BufferedInputStream(foto.getInputstream());  
+            File file = new File("/home/nito/fotos/"+ foto.getFileName());  
+  
+            FileOutputStream fout = new FileOutputStream(file);  
+  
+            while (in.available() != 0) {  
+                fout.write(in.read());  
+            }  
+            fout.close();  
+//            FacesMessage msg = new FacesMessage("O Arquivo ", file.getName()  
+//                    + " salvo.");  
+//            FacesContext.getCurrentInstance().addMessage("msgUpdate", msg);  
+        }  
+        catch (Exception ex) {  
+            ex.printStackTrace();  
+        }  
+    }
+
+	public Animal getAnimalSelecionado() {
+		return animalSelecionado;
+	}
+
+	public void setAnimalSelecionado(Animal animalSelecionado) {
+		this.animalSelecionado = animalSelecionado;
+	}  
+
+}

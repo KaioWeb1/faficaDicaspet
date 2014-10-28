@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+	<title>DicasPet- Contato - Celtic Solutions</title>
+
+</h:head>
+<h:body>
+	<h:outputStylesheet library="css" name="style.css" />
+
+	<div class="wrapper">
+		<ui:include src="template-admin/header.xhtml" />
+		<!-- Conteudo do site começa apartir daqui -->
+		<div class="geral">
+
+
+			<!-- o layout do site divide-se em 3 colunas: left, center, right -->
+			<ui:include src="template-admin/left-prestador.xhtml" />
+			<div class="center">
+				<!-- aqui é onde fica o conteúdo -->
+				<div class="bloco-contato">
+					<h3>Editando Serviço DicasPet</h3>
+					<h:form id="form_cadastro_servico">
+						<p:messages errorStyle="color: red" infoStyle="color: yellow"
+							warnStyle="color: orange" fatalStyle="color: gray"
+							showDetail="true" showSummary="false" />
+
+						<h:outputLabel value="Nome do Serviço:" />
+						<p:inputText value="#{servicoMB.servico.srv_descricao}" id="nome"
+							requiredMessage="Nome do Serviço: Campo Obrigatório"
+							required="true" />
+						<p:watermark for="nome" value="Nome do Serviço" />
+						<br />
+						<br />
+
+						<h:outputLabel value="Categoria do Serviço:" />
+						<h:selectOneMenu value="#{servicoMB.servico.srv_categoria}">
+							<f:selectItem itemValue="Hoteis" itemLabel="Hotéis" />
+							<f:selectItem itemValue="Canil" itemLabel="Canil" />
+							<f:selectItem itemValue="Petshop" itemLabel="Petshop" />
+							<f:selectItem itemValue="Clinicas Veterinarias"
+								itemLabel="Clinicas Veterinárias" />
+							<f:selectItem itemValue="Adestradores" itemLabel="Adestradores" />
+							<f:selectItem itemValue="Outros" itemLabel="Ourtos" />
+						</h:selectOneMenu>
+						<br />
+						<br />
+						<h:outputLabel value="Preço :" />
+						<!-- <p:inputText  id="preco_cad_servico" value="#{servicoMB.servico.srv_preco}" onblur="$(this).priceFormat();"/> -->
+						<p:spinner id="preco" value="#{servicoMB.servico.srv_preco}"
+							prefix="R$ " min="0.01" max="9000.00" 
+							required="true" converter="javax.faces.Double" label="Preço">
+							<f:validateDoubleRange minimum="0.01" maximum="9000.00"
+								for="preco" />
+						</p:spinner>
+						<br></br>
+						
+						<h:commandButton value="Enviar" class="bt-enviar"
+							actionListener="#{servicoMB.editar()}" />
+						<br></br>
+
+					</h:form>
+				</div>
+				<!-- Fim do Bloco  -->
+
+				<div class="banner">
+					<h3>Publicidade</h3>
+					<img alt="" src="../images/banner1.jpg" />
+				</div>
+
+
+
+
+			</div>
+			<ui:include src="template-admin/right.xhtml" />
+
+
+
+		</div>
+		<ui:include src="template-admin/footer.xhtml" />
+	</div>
+
+</h:body>
+</html>

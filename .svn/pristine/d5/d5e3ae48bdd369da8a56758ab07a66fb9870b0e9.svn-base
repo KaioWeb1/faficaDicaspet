@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<h:head>
+
+	<title>DicasPet - Celtic Solutions</title>
+
+</h:head>
+<body>
+	<h:outputStylesheet library="css" name="style.css" />
+
+	<div class="wrapper">
+		<ui:include src="template-admin/header.xhtml" />
+		<!-- Conteudo do site começa apartir daqui -->
+		<div class="geral">
+
+			<!-- aqui é onde fica o conteúdo -->
+			<!-- o layout do site divide-se em 3 colunas: left, center, right -->
+			<ui:include src="template-admin/left-usuario.xhtml" />
+
+			<div class="center">
+
+				<!-- aqui é onde fica o conteúdo -->
+				<!-- Inicio Bloco de Perguntas -->
+
+				<div class="bloco-perguntas">
+					<h3>Encontre seu amigo</h3>
+				
+						<h:messages errorStyle="color: red" infoStyle="color: green"
+							warnStyle="color: orange" fatalStyle="color: gray"
+							showDetail="true" showSummary="false" />
+
+						<h:form>
+							<p:dataTable var="car" value="#{animalMB.animaisAdocao}" rows="10"
+								paginator="true"
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="5,10,15">
+								<p:column headerText="Nome">
+									<h:outputText value="#{car.ani_nome}" />
+								</p:column>
+
+								<p:column headerText="Idade">
+									<h:outputText value="#{car.ani_idade}" />
+								</p:column>
+
+								<p:column headerText="Porte">
+									<h:outputText value="#{car.ani_porte}" />
+								</p:column>
+
+								<p:column headerText="Dono">
+									<h:outputText value="#{car.ani_id_usu.usu_nome}" />
+								</p:column>
+								
+								<p:column>
+								   <h:commandButton value="Adotar" action="#{usuarioMB.adotar(car)}" />
+								</p:column>
+							</p:dataTable>
+						</h:form>
+	
+				
+				</div>
+
+				<div class="banner">
+					<h3>Publicidade</h3>
+					<img alt="" src="../images/banner1.jpg" />
+				</div>
+
+
+
+
+
+			</div>
+			<ui:include src="template-admin/right.xhtml" />
+		</div>
+		<ui:include src="template-admin/footer.xhtml" />
+	</div>
+
+</body>
+</html>

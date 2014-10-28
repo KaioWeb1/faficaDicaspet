@@ -1,0 +1,158 @@
+package com.dicaspet.util;
+
+import java.util.Date;
+
+import javax.swing.JOptionPane;
+
+import org.hibernate.cfg.Configuration;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+
+import com.dicaspet.entidade.Mensagem;
+import com.dicaspet.entidade.Servico;
+import com.dicaspet.entidade.Usuario;
+import com.dicaspet.fachada.Fachada;
+
+
+
+public class GeraBanco {
+    public static void main (String [] args){
+    	try {
+    		Configuration cfg = new Configuration();
+            cfg.configure();
+            SchemaExport se = new SchemaExport(cfg);
+            se.create(true, true);
+            
+            //cadastrar usuario padrao
+           Usuario f = new Usuario();
+    		f.setUsu_nome("Administrador");
+    		f.setUsu_nivel_acesso("adm");
+    		f.setUsu_email("1@gmail.com");
+    		f.setUsu_senha("1");
+    		f.setUsu_status("A");
+    		f.setData_cadastro(new Date());
+    		f.setUsu_pontuacao(100);
+    		
+            Usuario f1 = new Usuario();
+     		f1.setUsu_nome("Luciano");
+     		f1.setUsu_nivel_acesso("usuario");
+     		f1.setUsu_email("2@gmail.com");
+     		f1.setUsu_senha("2");
+     		f1.setUsu_status("A");
+     		f1.setData_cadastro(new Date());
+     		f1.setUsu_pontuacao(100);
+     		
+            Usuario f2 = new Usuario();
+     		f2.setUsu_nome("PetShow");
+     		f2.setUsu_nivel_acesso("prestador");
+     		f2.setUsu_email("3@gmail.com");
+     		f2.setUsu_senha("3");
+     		f2.setUsu_status("A");
+     		f2.setData_cadastro(new Date());
+     		f2.setUsu_pontuacao(100);
+    		
+    		Mensagem m = new Mensagem();
+ 
+            m.setMsg_cod_msg(1);
+            m.setMsg_conteudo("Se não existem muitos carrapatos dá para tirar com a mão mesmo ou uma pinça. E depois é só aplicar o remédio no período correto que elas não se instalam mais. Agora no verão tem que cuidar bastante e aplicar com mais frequência o remédio. Usamos sempre frontline ou um outro que é do laboratório bayer muito bom.");
+            m.setMsg_data_cadastro(new Date());
+            m.setMsg_id_usu(f);
+            m.setMsg_isPergunta(true);
+            m.setMsg_status(Constants.ATIVO);
+            m.setMsg_tipo_animal("Cachorro");
+            m.setMsg_titulo("Como tratar o cachorro atacado por carrapatos?");
+            
+    		Mensagem m1 = new Mensagem();
+    		 
+            m1.setMsg_cod_msg(1);
+            m1.setMsg_conteudo("Uma dica é lavar a picada com sabonete antibacteriano e água morna. Isso irá reduzir as chances de infectar. Depois de lavar a área, você pode também aplicar álcool para desinfetá-la.");
+            m1.setMsg_data_cadastro(new Date());
+            m1.setMsg_id_usu(f);
+            m1.setMsg_isPergunta(true);
+            m1.setMsg_status(Constants.ATIVO);
+            m1.setMsg_tipo_animal("Cachorro");
+            m1.setMsg_titulo("Como cicatrizar as feridas de mordida de carrapato no cão?");
+            
+    		Mensagem m2 = new Mensagem();
+   		 
+            m2.setMsg_cod_msg(1);
+            m2.setMsg_conteudo("Isso pode ter relação sim com o problema cardíaco...mas alguns cães roncam normalmente...sem que haja algum problema.Mas na duvida não deixe de consultar um veterinário!");
+            m2.setMsg_data_cadastro(new Date());
+            m2.setMsg_id_usu(f);
+            m2.setMsg_isPergunta(true);
+            m2.setMsg_status(Constants.ATIVO);
+            m2.setMsg_tipo_animal("Cachorro");
+            m2.setMsg_titulo("Porque os cão roncam?");
+            
+        	Mensagem m3 = new Mensagem();
+   		 
+            m3.setMsg_cod_msg(1);
+            m3.setMsg_conteudo("Se as lambidas se tornarem muito intensas e fugirem do controle, talvez seja o momento de distrair o gato e ensiná-lo a não lamber.");
+            m3.setMsg_data_cadastro(new Date());
+            m3.setMsg_id_usu(f);
+            m3.setMsg_isPergunta(true);
+            m3.setMsg_status(Constants.ATIVO);
+            m3.setMsg_tipo_animal("Gato");
+            m3.setMsg_titulo("Como fazer o gato parar de lamber as pessoas?");
+            
+    		Mensagem m4 = new Mensagem();
+   		 
+            m4.setMsg_cod_msg(1);
+            m4.setMsg_conteudo("Os gatos reagem à música de forma muito particular. Por vezes miam, outras vezes acalmam-se. Os gatos ouvem melhor do que os humanos, embora não captem os sons mais graves.");
+            m4.setMsg_data_cadastro(new Date());
+            m4.setMsg_id_usu(f);
+            m4.setMsg_isPergunta(true);
+            m4.setMsg_status(Constants.ATIVO);
+            m4.setMsg_tipo_animal("Gato");
+            m4.setMsg_titulo("Os gatos gostam de ouvir músicas?");
+            
+            Servico s = new Servico();
+     		s.setSrv_descricao("Consulta veterinario");
+     		s.setSrv_id_prtsrv(f2);
+     		s.setSrv_categoria("Veterinaria");
+     		s.setSrv_preco(20);
+     		
+     		s.setSrv_status("A");
+     		s.setSrv_pontuacao(100);
+     		
+
+            Servico s1 = new Servico();
+     		s1.setSrv_descricao("Adestradores");
+     		s1.setSrv_id_prtsrv(f2);
+     		s1.setSrv_preco(10);
+     		
+     		s1.setSrv_categoria("Pet-shop");
+     		s1.setSrv_status("A");
+     		s1.setSrv_pontuacao(101);
+     		
+            Servico s2 = new Servico();
+     		s2.setSrv_descricao("Aculputura");
+     		s2.setSrv_id_prtsrv(f2);
+     		s2.setSrv_preco(30);
+     	
+     		s2.setSrv_categoria("Pet-shop");
+     		s2.setSrv_status("A");
+     		s2.setSrv_pontuacao(103);
+            
+         
+           Fachada.getInstance().controladorUsuario().cadastrar(f);
+           Fachada.getInstance().controladorUsuario().cadastrar(f1);
+           Fachada.getInstance().controladorUsuario().cadastrar(f2);
+           Fachada.getInstance().controladorMensagem().cadastrar(m);
+           Fachada.getInstance().controladorMensagem().cadastrar(m1);
+           Fachada.getInstance().controladorMensagem().cadastrar(m2);
+           Fachada.getInstance().controladorMensagem().cadastrar(m3);
+           Fachada.getInstance().controladorMensagem().cadastrar(m4);
+           Fachada.getInstance().controladorServico().cadastrar(s);
+           Fachada.getInstance().controladorServico().cadastrar(s1);
+           Fachada.getInstance().controladorServico().cadastrar(s2);
+
+            
+            JOptionPane.showMessageDialog(null, "O Banco de Dados foi gerado com sucesso!",
+            		"Fafica .:. Alerta",JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Erro ao Gerar a Base de Dados!",
+            	"Fafica .:. Alerta",JOptionPane.ERROR_MESSAGE);
+		}
+    }
+}
